@@ -67,12 +67,10 @@ const bot = new Composer();
 bot.start((ctx) => ctx.reply("ارحب"));
 
 bot.on("text", (ctx) => {
-  console.log("GETCHAT::: ", ctx.getChat());
-  console.log("getChatMember::: ", ctx.getChatMember());
-  console.log("__________________________");
   console.log("ctx.message", ctx.message);
   console.log("ctx.chat", ctx.chat);
   console.log("ctx.from", ctx.from);
+  ctx.reply(`انت  ${ctx.from.first_name} ${ctx.from.last_name} `);
 });
 
 module.exports = bot;
