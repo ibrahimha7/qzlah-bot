@@ -67,9 +67,8 @@ const bot = new Composer();
 bot.start((ctx) => ctx.reply("ارحب"));
 
 bot.on("text", (ctx) => {
-  console.log("GETCHAT::: ", getChat());
-  console.log("getChatMember::: ", getChatMember());
-  console.log("GETCHAT::: ", getChat());
+  console.log("GETCHAT::: ", ctx.getChat());
+  console.log("getChatMember::: ", ctx.getChatMember());
   console.log("__________________________");
   console.log("ctx.message", ctx.message);
   console.log("ctx.chat", ctx.chat);
