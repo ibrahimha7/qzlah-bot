@@ -62,6 +62,8 @@
 // return response.data.parsed[0].food.nutrients.ENERC_KCAL;
 
 const { Composer } = require("micro-bot");
+const axios = require("axios");
+const bodyParser = require("body-parser");
 const bot = new Composer();
 
 interface IMessage {
