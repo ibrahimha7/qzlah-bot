@@ -67,12 +67,13 @@ const bot = new Composer();
 bot.start((ctx) => ctx.reply("ارحب"));
 
 bot.on("text", (ctx) => {
-  // Explicit usage
-  ctx.telegram.sendMessage(ctx.message.chat.id, `Hello ${ctx.state.role}`);
-  console.log(ctx);
-
-  // Using context shortcut
-  ctx.reply(`Hello ${ctx.state.role}`);
+  console.log("GETCHAT::: ", getChat());
+  console.log("getChatMember::: ", getChatMember());
+  console.log("GETCHAT::: ", getChat());
+  console.log("__________________________");
+  console.log("ctx.message", ctx.message);
+  console.log("ctx.chat", ctx.chat);
+  console.log("ctx.from", ctx.from);
 });
 
 module.exports = bot;
