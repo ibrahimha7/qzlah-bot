@@ -64,41 +64,15 @@
 const { Composer } = require("micro-bot");
 const bot = new Composer();
 
-bot.start((ctx) => ctx.reply("Welcome"));
-bot.help((ctx) => ctx.reply("Send me a sticker"));
-bot.on("sticker", (ctx) => ctx.reply("👍"));
-bot.hears("hi", (ctx) => ctx.reply("Hey there"));
-bot.command("quit", (ctx) => {
-  // Explicit usage
-  ctx.telegram.leaveChat(ctx.message.chat.id);
-
-  // Using context shortcut
-  ctx.leaveChat();
-});
+bot.start((ctx) => ctx.reply("ارحب"));
 
 bot.on("text", (ctx) => {
   // Explicit usage
   ctx.telegram.sendMessage(ctx.message.chat.id, `Hello ${ctx.state.role}`);
+  console.log(ctx);
 
   // Using context shortcut
   ctx.reply(`Hello ${ctx.state.role}`);
-});
-
-bot.on("callback_query", (ctx) => {
-  // Explicit usage
-  ctx.telegram.answerCbQuery(ctx.callbackQuery.id);
-
-  // Using context shortcut
-  ctx.answerCbQuery();
-});
-
-bot.on("inline_query", (ctx) => {
-  const result = [];
-  // Explicit usage
-  ctx.telegram.answerInlineQuery(ctx.inlineQuery.id, result);
-
-  // Using context shortcut
-  ctx.answerInlineQuery(result);
 });
 
 module.exports = bot;
