@@ -103,7 +103,11 @@ const getCalories = async (product) => {
         "x-rapidapi-key": "BAa4aA12AFmshMDWPhRIPhLjqhvlp1CMKA6jsnqibLJovBwXIW",
       },
     }); //use data destructuring to get data from the promise object
-    return response.data.parsed[0].food.nutrients.ENERC_KCAL;
+    // return response.data.parsed[0].food.nutrients.ENERC_KCAL;
+    console.log(
+      "your calories are from the log: ",
+      response.data.parsed[0].food.nutrients.ENERC_KCAL
+    );
   } catch (error) {
     console.log(error);
   }
