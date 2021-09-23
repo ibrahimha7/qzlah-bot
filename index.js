@@ -64,13 +64,48 @@
 const { Composer } = require("micro-bot");
 const bot = new Composer();
 
+interface IMessage {
+  message_id: number;
+  from: {
+    id: number,
+    is_bot: boolean,
+    first_name: string,
+    last_name: string,
+    language_code: "ar" | "en",
+  };
+  chat: {
+    id: number,
+    first_name: string,
+    last_name: string,
+    type: string,
+  };
+  date: number;
+  text: string; // The actual message
+}
 bot.start((ctx) => ctx.reply("ارحب"));
 
 bot.on("text", (ctx) => {
-  console.log("ctx.message", ctx.message);
-  console.log("ctx.chat", ctx.chat);
-  console.log("ctx.from", ctx.from);
-  ctx.reply(`انت  ${ctx.from.first_name} ${ctx.from.last_name} `);
+  let message = ctx.message.text;
+  getCalories(message);
+
+  ctx.reply(`سعراتك  ${getCalories(message)}`);
 });
 
+// get calories
+const getCalories = async (product) => {
+  try {
+    const response = await axios.request({
+      method: "GET",
+      url: "https://edamam-food-and-grocery-database.p.rapidapi.com/parser",
+      params: { ingr: product },
+      headers: {
+        "x-rapidapi-host": "edamam-food-and-grocery-database.p.rapidapi.com",
+        "x-rapidapi-key": "BAa4aA12AFmshMDWPhRIPhLjqhvlp1CMKA6jsnqibLJovBwXIW",
+      },
+    }); //use data destructuring to get data from the promise object
+    return response.data.parsed[0].food.nutrients.ENERC_KCAL;
+  } catch (error) {
+    console.log(error);
+  }
+};
 module.exports = bot;
