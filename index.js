@@ -10,8 +10,8 @@ bot.start((ctx) => ctx.reply("ارحب"));
 bot.on("text", (ctx) => {
   let message = ctx.message.text;
 
-  ctx.reply = `Your calories: ${getFood(message)}`;
-  ctx.reply(`باقي شين؟`);
+  ctx.reply(`Your calories: ${getFood(message)}`);
+  // ctx.reply(`باقي شين؟`);
 });
 
 const getFood = (food) => {
