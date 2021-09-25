@@ -10,13 +10,16 @@ bot.start((ctx) => ctx.reply("ارحب"));
 bot.on("text", (ctx) => {
   let message = ctx.message.text;
 
-  getFood(message).then((res) => {
-    ctx.reply(`سعراتك  ${res?.cal}`);
-  });
+  ctx.reply = `Your calories: ${getFood(message)}`;
   ctx.reply(`باقي شين؟`);
 });
 
 const getFood = (food) => {
+  getFoodFromApi(food).then((res) => {
+    return res.cal;
+  });
+};
+const getFoodFromApi = (food) => {
   return axios.get(`${bot_api}cal/${food}`).then((response) => {
     response = response.data;
     return response;
