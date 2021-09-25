@@ -9,10 +9,18 @@ bot.start((ctx) => ctx.reply("ارحب"));
 
 bot.on("text", (ctx) => {
   let message = ctx.message.text;
-  const response = axios.get(`${bot_api}/cal/${message}`);
-  console.log(response);
 
-  ctx.reply(`سعراتك  ${response?.cal}`);
+  getFood(message).then((res) => {
+    ctx.reply(`سعراتك  ${res?.cal}`);
+  });
+  ctx.reply(`باقي شين؟`);
 });
+
+const getFood = (food) => {
+  return axios.get(`${bot_api}cal/${food}`).then((response) => {
+    response = response.data;
+    return response;
+  });
+};
 
 module.exports = bot;
