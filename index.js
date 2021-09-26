@@ -10,17 +10,18 @@ const getFoodFromApi = async (food) => {
   return await axios
     .request({
       method: "GET",
-      url: "https://edamam-food-and-grocery-database.p.rapidapi.com/parser",
-      params: { ingr: food },
+      url: "https://nutrition-by-api-ninjas.p.rapidapi.com/v1/nutrition",
+      params: { query: food },
       headers: {
-        "x-rapidapi-host": "edamam-food-and-grocery-database.p.rapidapi.com",
+        "x-rapidapi-host": "nutrition-by-api-ninjas.p.rapidapi.com",
         "x-rapidapi-key": "BAa4aA12AFmshMDWPhRIPhLjqhvlp1CMKA6jsnqibLJovBwXIW",
       },
     })
     .then(function(response) {
       let x = {
-        food: food,
-        cal: response.data.parsed[0]?.food?.nutrients?.ENERC_KCAL,
+        food: response.data.name,
+        cal: response.data.calories,
+        sizeInG: response.data.serving_size_g,
       };
       return x;
     });
@@ -31,7 +32,10 @@ bot.start((ctx) => ctx.reply("ارحب"));
 bot.use((ctx) => {
   let message = ctx.message.text;
   getFoodFromApi(message).then((res) => {
-    ctx.reply(`your calories are: ${res.cal}`);
+    ctx.reply(`انت اجلت: ${res.food}
+    وفيهو: ${res.cal}
+    حجمو بالجرام: ${res.sizeInG}
+    `);
   });
 });
 
