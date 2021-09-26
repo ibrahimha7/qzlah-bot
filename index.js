@@ -1,10 +1,8 @@
-// return response.data.parsed[0].food.nutrients.ENERC_KCAL;
-
 const { Composer } = require("micro-bot");
 const axios = require("axios");
 
 // const { Telegraf } = require("telegraf");
-// const bot = new Telegraf(process.env.BOT_TOKEN);
+// const bot = new Telegraf("2044843585:AAH794jP4ozQIy3hd5eRU1-uaChiEUD5ALA");
 const bot = new Composer();
 const getFoodFromApi = async (food) => {
   return await axios
@@ -19,10 +17,11 @@ const getFoodFromApi = async (food) => {
     })
     .then(function(response) {
       let x = {
-        food: response.data.name,
-        cal: response.data.calories,
-        sizeInG: response.data.serving_size_g,
+        food: response.data[0].name,
+        cal: response.data[0].calories,
+        sizeInG: response.data[0].serving_size_g,
       };
+
       return x;
     });
 };
@@ -33,7 +32,7 @@ bot.use((ctx) => {
   let message = ctx.message.text;
   getFoodFromApi(message).then((res) => {
     ctx.reply(`انت اجلت: ${res.food}
-    وفيهو: ${res.cal}
+    وفيهو: ${res.cal} سعره
     حجمو بالجرام: ${res.sizeInG}
     `);
   });
