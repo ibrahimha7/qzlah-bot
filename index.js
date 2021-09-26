@@ -1,9 +1,12 @@
-const { Composer } = require("micro-bot");
 const axios = require("axios");
 
+const { Composer } = require("micro-bot");
 // const { Telegraf } = require("telegraf");
 // const bot = new Telegraf("2044843585:AAH794jP4ozQIy3hd5eRU1-uaChiEUD5ALA");
 const bot = new Composer();
+
+const reducer = (previousValue, currentValue) => previousValue + currentValue;
+
 const getFoodFromApi = async (food) => {
   return await axios
     .request({
@@ -16,11 +19,28 @@ const getFoodFromApi = async (food) => {
       },
     })
     .then(function(response) {
-      let x = {
-        food: response.data[0].name,
-        cal: response.data[0].calories,
-        sizeInG: response.data[0].serving_size_g,
-      };
+      let x;
+      if (response.data.length < 1) {
+        x = {
+          food: response.data[0].name,
+          cal: response.data[0].calories,
+          sizeInG: response.data[0].serving_size_g,
+        };
+      } else {
+        let countName = [];
+        let countCalories = [];
+        let countGrams = [];
+        response.data.map((item) => {
+          countName.push(item.name);
+          countCalories.push(item.calories);
+          countGrams.push(item.serving_size_g);
+        });
+        x = {
+          food: countName.join(),
+          cal: countCalories.reduce(reducer),
+          sizeInG: countGrams.reduce(reducer),
+        };
+      }
 
       return x;
     });
