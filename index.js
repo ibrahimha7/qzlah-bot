@@ -7,8 +7,10 @@ const bot_api = process.env.BOT_API_SERVER;
 
 let foodCalories;
 const getFood = async (food) => {
+  console.log("4", food);
   await getFoodFromApi(food).then((res) => {
     foodCalories = res.cal;
+    console.log("3", foodCalories);
     return res.cal;
   });
 };
