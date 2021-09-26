@@ -2,34 +2,38 @@
 
 const { Composer } = require("micro-bot");
 const axios = require("axios");
-const bot = new Composer();
-const bot_api = process.env.BOT_API_SERVER;
 
-let foodCalories;
-const getFood = async (food) => {
-  console.log("4", food);
-  await getFoodFromApi(food).then((res) => {
-    foodCalories = res.cal;
-    console.log("3", foodCalories);
-    return res.cal;
-  });
-};
+// const { Telegraf } = require("telegraf");
+// const bot = new Telegraf(process.env.BOT_TOKEN);
+const bot = new Composer();
 const getFoodFromApi = async (food) => {
-  return await axios.get(`${bot_api}cal/${food}`).then((response) => {
-    response = response.data;
-    return response;
-  });
+  return await axios
+    .request({
+      method: "GET",
+      url: "https://edamam-food-and-grocery-database.p.rapidapi.com/parser",
+      params: { ingr: food },
+      headers: {
+        "x-rapidapi-host": "edamam-food-and-grocery-database.p.rapidapi.com",
+        "x-rapidapi-key": "BAa4aA12AFmshMDWPhRIPhLjqhvlp1CMKA6jsnqibLJovBwXIW",
+      },
+    })
+    .then(function(response) {
+      let x = {
+        food: food,
+        cal: response.data.parsed[0]?.food?.nutrients?.ENERC_KCAL,
+      };
+      return x;
+    });
 };
 
 bot.start((ctx) => ctx.reply("ارحب"));
 
-bot.on("text", (ctx) => {
+bot.use((ctx) => {
   let message = ctx.message.text;
-  getFood(message);
-  console.log("1", message);
-  console.log("2", foodCalories);
-  ctx.reply(`سعراتك: ${foodCalories} يازلمه`);
-  ctx.reply(`باقي شين؟`);
+  getFoodFromApi(message).then((res) => {
+    ctx.reply(`your calories are: ${res.cal}`);
+  });
 });
 
+// bot.launch();
 module.exports = bot;
