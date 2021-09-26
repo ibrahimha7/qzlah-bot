@@ -24,6 +24,8 @@ bot.start((ctx) => ctx.reply("ارحب"));
 bot.on("text", (ctx) => {
   let message = ctx.message.text;
   getFood(message);
+  console.log("1", message);
+  console.log("2", foodCalories);
   ctx.reply(`سعراتك: ${foodCalories} يازلمه`);
   ctx.reply(`باقي شين؟`);
 });
